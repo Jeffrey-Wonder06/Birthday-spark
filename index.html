@@ -229,9 +229,8 @@
                                         finalMessageElement.style.opacity = 0;
                                         setTimeout(() => {
                                             finalMessageElement.style.display = 'none';
-                                            displayHappyBirthday(); // Re-display Happy Birthday message
                                         }, 1000); // Wait for fade out effect
-                                    }, 4000); // Display final message for 4 seconds
+                                    }, 1000); // Display final message for 1 second
                                 }, 1000); // Wait 1 second before showing final message
                             }, 1000); // Wait 1 second before reappearing fireworks and balloons
                         }, 1000); // Wait for vanish effect
@@ -250,19 +249,11 @@
             }
         }
 
-        function startAnimation() {
-            countdownElement.style.display = 'block';
-            createBalloons();
-            setTimeout(() => {
-                triggerFireworks();
-            }, 2000); // Wait 2 seconds before triggering fireworks
-        }
-
         const countdownInterval = setInterval(updateCountdown, 1000);
-        startAnimation();
     </script>
 </body>
 </html>
+
 
 
 
