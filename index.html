@@ -164,29 +164,29 @@
         let secondsRemaining = 15;
 
         function updateCountdown() {
-            if (secondsRemaining >= 0) {
-                countdownElement.textContent = secondsRemaining;
+            countdownElement.textContent = secondsRemaining;
+
+            if (secondsRemaining > 0) {
                 secondsRemaining--;
             } else {
+                clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
                 dateElement.textContent = 'Friday, August 16';
                 happyBirthdayElement.style.display = 'block';
-                fireworksCanvas.style.display = 'none';
-                glittersCanvas.style.display = 'none';
+                triggerFireworks();
                 createBalloons();
                 setTimeout(() => {
                     happyBirthdayElement.style.opacity = 0;
-                    fireworksCanvas.style.display = 'none';
-                    glittersCanvas.style.display = 'none';
                     hideBalloons();
                     setTimeout(() => {
                         happyBirthdayElement.style.display = 'none';
                         displayWishes();
                     }, 1000); // Wait for fade out effect
-                }, 3000); // Display for 2 seconds
-                clearInterval(countdownInterval);
+                }, 3000); // Display for 3 seconds
             }
         }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
 
         function triggerFireworks() {
             fireworksCanvas.style.display = 'block';
@@ -248,7 +248,7 @@
                     span.classList.add('letter');
                     span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
                     span.textContent = char;
-                    span.style.setProperty('--i', ${wordIndex * message.length + charIndex});
+                    span.style.setProperty('--i', wordIndex * message.length + charIndex);
                     finalMessageElement.appendChild(span);
                 });
                 finalMessageElement.appendChild(document.createTextNode(' ')); // Add space between words
@@ -261,7 +261,7 @@
                     fireworksCanvas.style.display = 'block';
                     glittersCanvas.style.display = 'block';
                 }, 1000); // Wait for fade out effect
-            }, 3000); // Display for 2 seconds
+            }, 3000); // Display for 3 seconds
         }
 
         function createBalloons() {
@@ -278,12 +278,10 @@
                 setTimeout(() => balloon.remove(), 1000); // Remove after fade out
             });
         }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        triggerFireworks();
     </script>
 </body>
 </html>
+
 
 
 
