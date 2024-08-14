@@ -19,13 +19,19 @@
             color: #FFFFFF; /* White color */
             margin-top: 10%;
         }
-        #time {
-            font-size: 36px;
+        #countdown-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10%;
+        }
+        #current-date {
+            font-size: 24px;
             color: #FFFFFF;
+            margin-bottom: 10px;
         }
         #countdown {
             font-size: 56px;
-            margin-top: 20px;
             color: #FFD700; /* Gold color */
         }
         #happy-birthday {
@@ -140,6 +146,20 @@
             animation: drop 0.5s ease forwards;
             animation-delay: calc(var(--i) * 0.1s); /* Delay based on letter index */
         }
+        @media (max-width: 600px) {
+            #countdown {
+                font-size: 40px;
+            }
+            #happy-birthday {
+                font-size: 60px;
+            }
+            #wishes {
+                font-size: 28px;
+            }
+            #final-message {
+                font-size: 48px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -147,9 +167,10 @@
     <div id="cake"></div>
     <div id="gift"></div>
     <div id="glitters"></div>
-    <div id="date">Wednesday, August 15</div>
-    <div id="time">11:59</div>
-    <div id="countdown">59</div>
+    <div id="date">
+        <div id="current-date">Wednesday, August 15</div>
+        <div id="countdown">59</div>
+    </div>
     <div id="happy-birthday">HAPPY BIRTHDAY LOLA</div>
     <div id="wishes"></div>
     <div id="final-message"></div>
@@ -157,8 +178,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const countdownElement = document.getElementById('countdown');
-        const dateElement = document.getElementById('date');
-        const timeElement = document.getElementById('time');
+        const dateElement = document.getElementById('current-date');
         const happyBirthdayElement = document.getElementById('happy-birthday');
         const fireworksCanvas = document.getElementById('fireworks');
         const cakeElement = document.getElementById('cake');
@@ -166,11 +186,14 @@
         const glittersCanvas = document.getElementById('glitters');
         const wishesElement = document.getElementById('wishes');
         const finalMessageElement = document.getElementById('final-message');
-
+        const countdownSound = new Audio('countdown-sound.mp3');
+        const boomSound = new Audio('boom-sound.mp3');
+        
         let secondsRemaining = 59;
 
         function updateCountdown() {
             countdownElement.textContent = secondsRemaining;
+            countdownSound.play();
 
             if (secondsRemaining > 0) {
                 secondsRemaining--;
@@ -178,7 +201,7 @@
                 clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
                 dateElement.textContent = 'Thursday, August 16';
-                timeElement.textContent = '12:00';
+                countdownElement.textContent = '12:00';
                 happyBirthdayElement.style.display = 'block';
                 triggerFireworks();
                 createBalloons();
@@ -198,6 +221,7 @@
         function triggerFireworks() {
             fireworksCanvas.style.display = 'block';
             glittersCanvas.style.display = 'block';
+            boomSound.play();
             const duration = 5 * 1000; // 5 seconds
             const end = Date.now() + duration;
 
@@ -219,8 +243,8 @@
 
         function displayWishes() {
             wishesElement.style.display = 'block';
-            const message = "Wishing you long life and prosperity.\nMay this special day bring you closer to your dreams and fill your heart with joy.";
-            let index = 0;
+            const message = "Wishing you long life and prosperity.\nMay this special day bring you
+let index = 0;
             wishesElement.innerHTML = '';
 
             function typeWriter() {
@@ -249,6 +273,7 @@
             finalMessageElement.style.display = 'block';
             const message = "Happy Birthday once more Lola!";
             finalMessageElement.innerHTML = '';
+
             message.split(' ').forEach((word, wordIndex) => {
                 word.split('').forEach((char, charIndex) => {
                     const span = document.createElement('span');
@@ -264,9 +289,9 @@
             setTimeout(() => {
                 finalMessageElement.style.opacity = 0;
                 setTimeout(() => {
-                    finalMessageElement.style.display = 'block';
-                    fireworksCanvas.style.display = 'block';
-                    glittersCanvas.style.display = 'block';
+                    finalMessageElement.style.display = 'none';
+                    fireworksCanvas.style.display = 'none';
+                    glittersCanvas.style.display = 'none';
                 }, 1000); // Wait for fade out effect
             }, 3000); // Display for 3 seconds
         }
@@ -288,7 +313,6 @@
     </script>
 </body>
 </html>
-
 
 
 
