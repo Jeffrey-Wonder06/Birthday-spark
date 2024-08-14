@@ -10,48 +10,41 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #001f3f; /* Navy blue background */
+            background-color: #001f3f;
             overflow: hidden;
         }
         #date {
-            font-family: 'Arial', sans-serif;
-            font-size: 24px;
-            color: #FFFFFF; /* White color */
-            margin-top: 10%;
-        }
-        #countdown-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10%;
-        }
-        #current-date {
             font-size: 24px;
             color: #FFFFFF;
-            margin-bottom: 10px;
+            margin-top: 10%;
+        }
+        #time {
+            font-size: 56px;
+            color: #FFFFFF;
         }
         #countdown {
             font-size: 56px;
-            color: #FFD700; /* Gold color */
+            margin-top: 5%;
+            color: #FFD700;
         }
         #happy-birthday {
             display: none;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            font-size: 84px; /* Increased font size */
+            font-size: 84px;
             font-weight: bold;
             margin-top: 10%;
-            color: #FFD700; /* Gold color */
-            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Shadow effect */
-            animation: colorChange 2s infinite; /* Color change animation */
+            color: #FFD700;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+            animation: colorChange 2s infinite;
         }
         @keyframes colorChange {
-            0% { color: #FFD700; } /* Gold */
-            25% { color: #FF69B4; } /* Hot Pink */
-            50% { color: #00BFFF; } /* Deep Sky Blue */
-            75% { color: #32CD32; } /* Lime Green */
-            100% { color: #FFD700; } /* Gold */
+            0% { color: #FFD700; }
+            25% { color: #FF69B4; }
+            50% { color: #00BFFF; }
+            75% { color: #32CD32; }
+            100% { color: #FFD700; }
         }
-        #fireworks, #glitters {
+        #fireworks {
             display: none;
             width: 100%;
             height: 100vh;
@@ -60,57 +53,6 @@
             left: 0;
             pointer-events: none;
         }
-        .balloon {
-            position: absolute;
-            bottom: -150px;
-            width: 60px;
-            height: 80px;
-            background: radial-gradient(circle at 50% 60%, #FF69B4, #FF1493);
-            border-radius: 60% 60% 50% 50%;
-            opacity: 1;
-            animation: float 10s ease-in-out forwards;
-        }
-        .balloon::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 80px;
-            background: linear-gradient(to bottom, #000, #555); /* Spaghetti-like appearance */
-            bottom: -80px;
-            left: 50%;
-            transform: translateX(-50%) rotate(-15deg);
-            border-radius: 10px;
-        }
-        .balloon:nth-child(1) {
-            left: 20%;
-            animation-delay: 0s;
-        }
-        .balloon:nth-child(2) {
-            left: 50%;
-            animation-delay: 2s;
-        }
-        .balloon:nth-child(3) {
-            left: 80%;
-            animation-delay: 4s;
-        }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-120vh); }
-        }
-        #cake {
-            display: none;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-            background: url('cake.png') no-repeat center center / contain;
-        }
-        #gift {
-            display: none;
-            width: 200px;
-            height: 200px;
-            margin: 20px auto 0;
-            background: url('gift.png') no-repeat center center / contain;
-        }
         #wishes {
             display: none;
             font-size: 36px;
@@ -118,14 +60,9 @@
             font-weight: bold;
             color: #FF1493;
             margin-top: 20px;
-            font-style: italic; /* Italic text */
-            white-space: pre-wrap; /* Preserve whitespace for animation */
-            line-height: 1.5; /* Add space between lines */
-            text-align: center; /* Center align text */
-        }
-        @keyframes vanish {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+            font-style: italic;
+            line-height: 1.5;
+            text-align: center;
         }
         #final-message {
             display: none;
@@ -144,75 +81,56 @@
         .letter {
             display: inline-block;
             animation: drop 0.5s ease forwards;
-            animation-delay: calc(var(--i) * 0.1s); /* Delay based on letter index */
-        }
-        @media (max-width: 600px) {
-            #countdown {
-                font-size: 40px;
-            }
-            #happy-birthday {
-                font-size: 60px;
-            }
-            #wishes {
-                font-size: 28px;
-            }
-            #final-message {
-                font-size: 48px;
-            }
+            animation-delay: calc(var(--i) * 0.1s);
         }
     </style>
 </head>
 <body>
     <canvas id="fireworks"></canvas>
-    <div id="cake"></div>
-    <div id="gift"></div>
-    <div id="glitters"></div>
-    <div id="date">
-        <div id="current-date">Wednesday, August 15</div>
-        <div id="countdown">59</div>
-    </div>
+    <div id="date">Wednesday, August 15</div>
+    <div id="time">11:59</div>
+    <div id="countdown">59</div>
     <div id="happy-birthday">HAPPY BIRTHDAY LOLA</div>
     <div id="wishes"></div>
     <div id="final-message"></div>
 
+    <audio id="tick-sound" src="tick.mp3"></audio>
+    <audio id="boom-sound" src="boom.mp3"></audio>
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const countdownElement = document.getElementById('countdown');
-        const dateElement = document.getElementById('current-date');
+        const dateElement = document.getElementById('date');
+        const timeElement = document.getElementById('time');
         const happyBirthdayElement = document.getElementById('happy-birthday');
         const fireworksCanvas = document.getElementById('fireworks');
-        const cakeElement = document.getElementById('cake');
-        const giftElement = document.getElementById('gift');
-        const glittersCanvas = document.getElementById('glitters');
         const wishesElement = document.getElementById('wishes');
         const finalMessageElement = document.getElementById('final-message');
-        const countdownSound = new Audio('countdown-sound.mp3');
-        const boomSound = new Audio('boom-sound.mp3');
-        
+        const tickSound = document.getElementById('tick-sound');
+        const boomSound = document.getElementById('boom-sound');
+
         let secondsRemaining = 59;
 
         function updateCountdown() {
             countdownElement.textContent = secondsRemaining;
-            countdownSound.play();
 
             if (secondsRemaining > 0) {
+                tickSound.play();
                 secondsRemaining--;
             } else {
                 clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
+                timeElement.textContent = '12:00';
                 dateElement.textContent = 'Thursday, August 16';
-                countdownElement.textContent = '12:00';
                 happyBirthdayElement.style.display = 'block';
                 triggerFireworks();
-                createBalloons();
                 setTimeout(() => {
                     happyBirthdayElement.style.opacity = 0;
-                    hideBalloons();
                     setTimeout(() => {
                         happyBirthdayElement.style.display = 'none';
                         displayWishes();
-                    }, 1000); // Wait for fade out effect
-                }, 3000); // Display for 3 seconds
+                    }, 1000);
+                }, 3000);
             }
         }
 
@@ -220,9 +138,8 @@
 
         function triggerFireworks() {
             fireworksCanvas.style.display = 'block';
-            glittersCanvas.style.display = 'block';
             boomSound.play();
-            const duration = 5 * 1000; // 5 seconds
+            const duration = 5 * 1000;
             const end = Date.now() + duration;
 
             const interval = setInterval(() => {
@@ -243,7 +160,7 @@
 
         function displayWishes() {
             wishesElement.style.display = 'block';
-            const message = "Wishing you long life and prosperity.\nMay this special day bring you
+            const message = "Wishing you long life and prosperity.\nMay this special day bring you closer to your dreams and fill your heart with joy.";
             let index = 0;
             wishesElement.innerHTML = '';
 
@@ -258,8 +175,8 @@
                         setTimeout(() => {
                             wishesElement.style.display = 'none';
                             triggerFinalMessage();
-                        }, 1000); // Wait for vanish effect
-                    }, 2000); // Display wishes for 2 seconds
+                        }, 1000);
+                    }, 2000);
                 }
             }
 
@@ -268,51 +185,30 @@
 
         function triggerFinalMessage() {
             fireworksCanvas.style.display = 'block';
-            glittersCanvas.style.display = 'block';
-            createBalloons(); // Recreate balloons
+            boomSound.play();
             finalMessageElement.style.display = 'block';
             const message = "Happy Birthday once more Lola!";
             finalMessageElement.innerHTML = '';
-
-            message.split(' ').forEach((word, wordIndex) => {
-                word.split('').forEach((char, charIndex) => {
-                    const span = document.createElement('span');
-                    span.classList.add('letter');
-                    span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
-                    span.textContent = char;
-                    span.style.setProperty('--i', wordIndex * message.length + charIndex);
-                    finalMessageElement.appendChild(span);
-                });
-                finalMessageElement.appendChild(document.createTextNode(' ')); // Add space between words
+            message.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.classList.add('letter');
+                span.textContent = char;
+                span.style.setProperty('--i', index);
+                finalMessageElement.appendChild(span);
             });
 
             setTimeout(() => {
                 finalMessageElement.style.opacity = 0;
                 setTimeout(() => {
-                    finalMessageElement.style.display = 'none';
-                    fireworksCanvas.style.display = 'none';
-                    glittersCanvas.style.display = 'none';
-                }, 1000); // Wait for fade out effect
-            }, 3000); // Display for 3 seconds
-        }
-
-        function createBalloons() {
-            for (let i = 0; i < 3; i++) {
-                const balloon = document.createElement('div');
-                balloon.classList.add('balloon');
-                document.body.appendChild(balloon);
-            }
-        }
-
-        function hideBalloons() {
-            document.querySelectorAll('.balloon').forEach(balloon => {
-                balloon.style.opacity = 0;
-                setTimeout(() => balloon.remove(), 1000); // Remove after fade out
-            });
+                    finalMessageElement.style.display = 'block';
+                    fireworksCanvas.style.display = 'block';
+                }, 1000);
+            }, 3000);
         }
     </script>
 </body>
 </html>
+
 
 
 
