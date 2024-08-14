@@ -134,6 +134,7 @@
         .letter {
             display: inline-block;
             animation: drop 0.5s ease forwards;
+            animation-delay: calc(var(--i) * 0.1s); /* Delay based on letter index */
         }
     </style>
 </head>
@@ -170,8 +171,8 @@
                 countdownElement.style.display = 'none';
                 dateElement.textContent = 'Tuesday, August 16';
                 happyBirthdayElement.style.display = 'block';
-                fireworksCanvas.style.display = 'block';
-                glittersCanvas.style.display = 'block';
+                fireworksCanvas.style.display = 'none';
+                glittersCanvas.style.display = 'none';
                 createBalloons();
                 setTimeout(() => {
                     happyBirthdayElement.style.opacity = 0;
@@ -247,6 +248,7 @@
                     span.classList.add('letter');
                     span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
                     span.textContent = char;
+                    span.style.setProperty('--i', `${wordIndex * message.length + charIndex}`);
                     finalMessageElement.appendChild(span);
                 });
                 finalMessageElement.appendChild(document.createTextNode(' ')); // Add space between words
@@ -255,9 +257,9 @@
             setTimeout(() => {
                 finalMessageElement.style.opacity = 0;
                 setTimeout(() => {
-                    finalMessageElement.style.display = 'none';
-                    fireworksCanvas.style.display = 'none';
-                    glittersCanvas.style.display = 'none';
+                    finalMessageElement.style.display = 'block';
+                    fireworksCanvas.style.display = 'block';
+                    glittersCanvas.style.display = 'block';
                 }, 1000); // Wait for fade out effect
             }, 3000); // Display for 2 seconds
         }
@@ -282,6 +284,7 @@
     </script>
 </body>
 </html>
+
 
 
 
