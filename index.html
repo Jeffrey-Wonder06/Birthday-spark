@@ -163,34 +163,39 @@
 
         let secondsRemaining = 15;
 
-        function updateCountdown() {
-            countdownElement.textContent = secondsRemaining;
+        const countdownSound = new Audio('countdown_beep.mp3'); // Countdown beep sound
+        const fireworksSound = new Audio('fireworks_boom.mp3'); // Fireworks boom sound
 
-            if (secondsRemaining > 0) {
+        function updateCountdown() {
+            if (secondsRemaining >= 0) {
+                countdownElement.textContent = secondsRemaining;
+                countdownSound.play(); // Play beep sound
                 secondsRemaining--;
             } else {
-                clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
                 dateElement.textContent = 'Friday, August 16';
                 happyBirthdayElement.style.display = 'block';
-                triggerFireworks();
+                fireworksCanvas.style.display = 'none';
+                glittersCanvas.style.display = 'none';
                 createBalloons();
                 setTimeout(() => {
                     happyBirthdayElement.style.opacity = 0;
+                    fireworksCanvas.style.display = 'none';
+                    glittersCanvas.style.display = 'none';
                     hideBalloons();
                     setTimeout(() => {
                         happyBirthdayElement.style.display = 'none';
                         displayWishes();
                     }, 1000); // Wait for fade out effect
-                }, 3000); // Display for 3 seconds
+                }, 3000); // Display for 2 seconds
+                clearInterval(countdownInterval);
             }
         }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
 
         function triggerFireworks() {
             fireworksCanvas.style.display = 'block';
             glittersCanvas.style.display = 'block';
+            fireworksSound.play(); // Play fireworks boom sound
             const duration = 5 * 1000; // 5 seconds
             const end = Date.now() + duration;
 
@@ -248,7 +253,7 @@
                     span.classList.add('letter');
                     span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
                     span.textContent = char;
-                    span.style.setProperty('--i', wordIndex * message.length + charIndex);
+                    span.style.setProperty('--i', `${wordIndex * message.length + charIndex}`);
                     finalMessageElement.appendChild(span);
                 });
                 finalMessageElement.appendChild(document.createTextNode(' ')); // Add space between words
@@ -261,7 +266,7 @@
                     fireworksCanvas.style.display = 'block';
                     glittersCanvas.style.display = 'block';
                 }, 1000); // Wait for fade out effect
-            }, 3000); // Display for 3 seconds
+            }, 3000); // Display for 2 seconds
         }
 
         function createBalloons() {
@@ -278,9 +283,13 @@
                 setTimeout(() => balloon.remove(), 1000); // Remove after fade out
             });
         }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        triggerFireworks();
     </script>
 </body>
 </html>
+
 
 
 
