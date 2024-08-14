@@ -161,6 +161,7 @@
                 happyBirthdayElement.style.display = 'block';
                 fireworksCanvas.style.display = 'block';
                 glittersCanvas.style.display = 'block';
+                createBalloons();
                 setTimeout(() => {
                     happyBirthdayElement.style.opacity = 0;
                     fireworksCanvas.style.display = 'none';
@@ -271,14 +272,12 @@
             });
         }
 
-        // Start fireworks and confetti before countdown ends
-        triggerFireworks();
-
         // Start countdown
         const countdownInterval = setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
+
 
 
 
