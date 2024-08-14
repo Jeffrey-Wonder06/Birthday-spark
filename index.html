@@ -17,25 +17,6 @@
             font-size: 48px;
             margin-top: 20%;
         }
-        .buzzer {
-            display: none;
-            width: 150px;
-            height: 75px;
-            background-color: gold;
-            border: 5px solid #000;
-            border-radius: 50% 50% 0 0;
-            margin: 20px auto 0 auto;
-            position: relative;
-        }
-        #hand {
-            display: none;
-            width: 150px;
-            position: absolute;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: press 1s ease-in-out forwards;
-        }
         #fireworks {
             display: none;
             width: 100%;
@@ -45,26 +26,26 @@
             left: 0;
             pointer-events: none;
         }
-
-        @keyframes press {
-            0% { top: -150px; }
-            50% { top: -75px; }
-            100% { top: 0; }
+        #happy-birthday {
+            display: none;
+            font-size: 48px;
+            font-weight: bold;
+            color: gold;
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+            margin-top: 40%;
         }
     </style>
 </head>
 <body>
     <div id="countdown">15</div>
-    <div class="buzzer" id="buzzer"></div>
-    <img id="hand" src="hand.png" alt="">
     <canvas id="fireworks"></canvas>
+    <div id="happy-birthday">Happy Birthday Lola!</div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const countdownElement = document.getElementById('countdown');
-        const buzzerElement = document.getElementById('buzzer');
-        const handElement = document.getElementById('hand');
         const fireworksCanvas = document.getElementById('fireworks');
+        const happyBirthdayElement = document.getElementById('happy-birthday');
 
         let secondsRemaining = 15;
 
@@ -74,9 +55,7 @@
                 secondsRemaining--;
             } else {
                 countdownElement.style.display = 'none';
-                buzzerElement.style.display = 'block';
-                handElement.style.display = 'block';
-                setTimeout(triggerFireworks, 1000);
+                triggerFireworks();
                 clearInterval(countdownInterval);
             }
         }
@@ -89,6 +68,8 @@
             const interval = setInterval(() => {
                 if (Date.now() > end) {
                     clearInterval(interval);
+                    fireworksCanvas.style.display = 'none';
+                    displayHappyBirthday();
                     return;
                 }
 
@@ -96,13 +77,19 @@
                     particleCount: 100,
                     startVelocity: 30,
                     spread: 360,
+                    colors: ['#FFD700', '#FFEC8B', '#FFD700', '#FF4500', '#ADFF2F', '#00CED1'],
                     origin: { y: Math.random() * 0.6 }
                 });
             }, 250);
+        }
+
+        function displayHappyBirthday() {
+            happyBirthdayElement.style.display = 'block';
         }
 
         const countdownInterval = setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
+
 
