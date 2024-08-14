@@ -187,7 +187,7 @@
                     particleCount: 100,
                     startVelocity: 30,
                     spread: 360,
-                    colors: ['#FFD700', '#FFEC8B', '#FFD700', '#FF4500', '#ADFF2F', '#00CED1'],
+                    colors: ['#FFD700', '#FFEC8B', '#FFFFFF', '#FF69B4'],
                     origin: { y: Math.random() * 0.6 }
                 });
             }, 250);
@@ -223,51 +223,23 @@
                             setTimeout(() => {
                                 fireworksCanvas.style.display = 'block';
                                 createBalloons();
-                                finalMessageElement.style.display = 'block';
                                 setTimeout(() => {
-                                    finalMessageElement.style.opacity = 0;
+                                    finalMessageElement.style.display = 'block';
                                     setTimeout(() => {
-                                        finalMessageElement.style.display = 'none';
-                                        displayHappyBirthday(); // Re-display Happy Birthday message
-                                    }, 1000); // Wait for fade out effect
-                                }, 4000); // Display final message for 4 seconds
-                            }, 1000); // Wait for vanish effect
+                                        finalMessageElement.style.opacity = 0;
+                                        setTimeout(() => {
+                                            finalMessageElement.style.display = 'none';
+                                            displayHappyBirthday(); // Re-display Happy Birthday message
+                                        }, 1000); // Wait for fade out effect
+                                    }, 4000); // Display final message for 4 seconds
+                                }, 1000); // Wait 1 second before showing final message
+                            }, 1000); // Wait 1 second before reappearing fireworks and balloons
                         }, 1000); // Wait for vanish effect
                     }, 6000); // Display wishes for 6 seconds
                 }
             }
 
             typeWriter();
-        }
-
-        function displayCake() {
-            cakeElement.style.display = 'block';
-        }
-
-        function displayGift() {
-            giftElement.style.display = 'block';
-        }
-
-        function triggerGlitters() {
-            glittersCanvas.style.display = 'block';
-            const duration = 5 * 1000; // 5 seconds
-            const end = Date.now() + duration;
-
-            const interval = setInterval(() => {
-                if (Date.now() > end) {
-                    clearInterval(interval);
-                    glittersCanvas.style.display = 'none';
-                    return;
-                }
-
-                confetti({
-                    particleCount: 100,
-                    startVelocity: 30,
-                    spread: 360,
-                    colors: ['#FFD700', '#FFEC8B', '#FFFFFF', '#FF69B4'],
-                    origin: { y: Math.random() * 0.6 }
-                });
-            }, 250);
         }
 
         function createBalloons() {
@@ -291,6 +263,7 @@
     </script>
 </body>
 </html>
+
 
 
 
