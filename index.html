@@ -30,9 +30,17 @@
             display: none;
             font-size: 48px;
             font-weight: bold;
-            color: gold;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
             margin-top: 10%;
+            color: #FF1493; /* Default color */
+            animation: colorChange 3s infinite;
+        }
+        @keyframes colorChange {
+            0% { color: #FF1493; }
+            33% { color: #00CED1; }
+            66% { color: #FFD700; }
+            100% { color: #FF1493; }
         }
         .balloon {
             position: absolute;
@@ -43,6 +51,16 @@
             border-radius: 60% 60% 50% 50%;
             opacity: 1;
             animation: float 10s ease-in-out forwards, fadeOut 10s ease-in-out forwards;
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: #000;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .balloon:nth-child(1) {
             left: 20%;
@@ -95,6 +113,13 @@
             left: 0;
             pointer-events: none;
         }
+        #wishes {
+            display: none;
+            font-size: 24px;
+            font-style: italic;
+            color: #FF1493;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +129,7 @@
     <div id="cake"></div>
     <div id="gift"></div>
     <div id="glitters"></div>
+    <div id="wishes">May your day be filled with joy and your year with endless happiness and success!</div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
@@ -113,6 +139,7 @@
         const cakeElement = document.getElementById('cake');
         const giftElement = document.getElementById('gift');
         const glittersCanvas = document.getElementById('glitters');
+        const wishesElement = document.getElementById('wishes');
 
         let secondsRemaining = 15;
 
@@ -156,6 +183,7 @@
             displayGift();
             triggerGlitters();
             createBalloons();
+            displayWishes();
         }
 
         function displayCake() {
@@ -196,10 +224,15 @@
             }
         }
 
+        function displayWishes() {
+            wishesElement.style.display = 'block';
+        }
+
         const countdownInterval = setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
+
 
 
 
