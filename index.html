@@ -37,7 +37,8 @@
         @keyframes colorChange {
             0% { color: #FFD700; } /* Gold */
             25% { color: #FF69B4; } /* Hot Pink */
-            50% { color: #00
+            50% { color: #00BFFF; } /* Deep Sky Blue */
+            75% { color: #32CD32; } /* Lime Green */
             100% { color: #FFD700; } /* Gold */
         }
         #fireworks, #glitters {
@@ -242,13 +243,14 @@
             const colors = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32', '#FF1493'];
             const words = message.split(' '); // Split message into words
             words.forEach((word, wordIndex) => {
-                const wordSpan = document.createElement('span');
-                wordSpan.className = 'word';
-                wordSpan.innerHTML = word.split('').map((letter, letterIndex) => {
-                    return `<span class="letter" style="color: ${colors[(wordIndex + letterIndex) % colors.length]}; animation-delay: ${letterIndex * 0.1}s;">${letter}</span>`;
-                }).join('');
-                finalMessageElement.appendChild(wordSpan);
-                finalMessageElement.innerHTML += ' '; // Add space between words
+                word.split('').forEach((char, charIndex) => {
+                    const span = document.createElement('span');
+                    span.classList.add('letter');
+                    span.style.color = colors[charIndex % colors.length];
+                    span.textContent = char;
+                    finalMessageElement.appendChild(span);
+                });
+                finalMessageElement.appendChild(document.createTextNode(' ')); // Add space between words
             });
 
             setTimeout(() => {
@@ -257,7 +259,6 @@
                     finalMessageElement.style.display = 'none';
                     fireworksCanvas.style.display = 'none';
                     glittersCanvas.style.display = 'none';
-                    hideBalloons();
                 }, 1000); // Wait for fade out effect
             }, 2000); // Display for 2 seconds
         }
@@ -271,18 +272,18 @@
         }
 
         function hideBalloons() {
-            const balloons = document.querySelectorAll('.balloon');
-            balloons.forEach(balloon => {
-                balloon.style.animation = 'none';
-                balloon.style.opacity = '0';
+            document.querySelectorAll('.balloon').forEach(balloon => {
+                balloon.style.opacity = 0;
+                setTimeout(() => balloon.remove(), 1000); // Remove after fade out
             });
         }
 
-        // Start countdown
         const countdownInterval = setInterval(updateCountdown, 1000);
+        triggerFireworks();
     </script>
 </body>
 </html>
+
 
 
 
