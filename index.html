@@ -37,8 +37,7 @@
         @keyframes colorChange {
             0% { color: #FFD700; } /* Gold */
             25% { color: #FF69B4; } /* Hot Pink */
-            50% { color: #00BFFF; } /* Deep Sky Blue */
-            75% { color: #32CD32; } /* Lime Green */
+            50% { color: #00
             100% { color: #FFD700; } /* Gold */
         }
         #fireworks, #glitters {
@@ -140,7 +139,7 @@
     <div id="cake"></div>
     <div id="gift"></div>
     <div id="glitters"></div>
-    <div id="date">TUESDAY, AUGUST 16</div>
+    <div id="date">Tuesday, August 15</div>
     <div id="countdown">15</div>
     <div id="happy-birthday">HAPPY BIRTHDAY LOLA</div>
     <div id="wishes"></div>
@@ -149,6 +148,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const countdownElement = document.getElementById('countdown');
+        const dateElement = document.getElementById('date');
         const happyBirthdayElement = document.getElementById('happy-birthday');
         const fireworksCanvas = document.getElementById('fireworks');
         const cakeElement = document.getElementById('cake');
@@ -165,6 +165,7 @@
                 secondsRemaining--;
             } else {
                 countdownElement.style.display = 'none';
+                dateElement.textContent = 'Tuesday, August 16';
                 happyBirthdayElement.style.display = 'block';
                 fireworksCanvas.style.display = 'block';
                 glittersCanvas.style.display = 'block';
@@ -186,7 +187,7 @@
         function triggerFireworks() {
             fireworksCanvas.style.display = 'block';
             glittersCanvas.style.display = 'block';
-            const duration = 6 * 1000; // 6 seconds
+            const duration = 5 * 1000; // 5 seconds
             const end = Date.now() + duration;
 
             const interval = setInterval(() => {
@@ -223,7 +224,7 @@
                             wishesElement.style.display = 'none';
                             triggerFinalMessage();
                         }, 1000); // Wait for vanish effect
-                    }, 3000); // Display wishes for 2 seconds
+                    }, 2000); // Display wishes for 2 seconds
                 }
             }
 
@@ -242,6 +243,7 @@
             const words = message.split(' '); // Split message into words
             words.forEach((word, wordIndex) => {
                 const wordSpan = document.createElement('span');
+                wordSpan.className = 'word';
                 wordSpan.innerHTML = word.split('').map((letter, letterIndex) => {
                     return `<span class="letter" style="color: ${colors[(wordIndex + letterIndex) % colors.length]}; animation-delay: ${letterIndex * 0.1}s;">${letter}</span>`;
                 }).join('');
@@ -257,7 +259,7 @@
                     glittersCanvas.style.display = 'none';
                     hideBalloons();
                 }, 1000); // Wait for fade out effect
-            }, 3000); // Display for 2 seconds
+            }, 2000); // Display for 2 seconds
         }
 
         function createBalloons() {
@@ -281,6 +283,7 @@
     </script>
 </body>
 </html>
+
 
 
 
