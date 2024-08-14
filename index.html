@@ -28,12 +28,12 @@
         }
         #happy-birthday {
             display: none;
-            font-size: 48px;
+            font-size: 72px;
             font-weight: bold;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+            color: #FF1493;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
             margin-top: 10%;
-            color: #FF1493; /* Default color */
             animation: colorChange 3s infinite;
         }
         @keyframes colorChange {
@@ -60,7 +60,7 @@
             background: #000;
             bottom: -80px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) rotate(-15deg); /* Added rotation for a curve effect */
         }
         .balloon:nth-child(1) {
             left: 20%;
@@ -117,8 +117,14 @@
             display: none;
             font-size: 24px;
             font-style: italic;
+            font-weight: bold;
             color: #FF1493;
             margin-top: 20px;
+            white-space: pre-wrap; /* Preserve whitespace for animation */
+        }
+        @keyframes appear {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -129,7 +135,7 @@
     <div id="cake"></div>
     <div id="gift"></div>
     <div id="glitters"></div>
-    <div id="wishes">May your day be filled with joy and your year with endless happiness and success!</div>
+    <div id="wishes"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
@@ -179,11 +185,38 @@
 
         function displayHappyBirthday() {
             happyBirthdayElement.style.display = 'block';
-            displayCake();
-            displayGift();
-            triggerGlitters();
-            createBalloons();
-            displayWishes();
+            setTimeout(() => {
+                happyBirthdayElement.style.opacity = 0;
+                setTimeout(() => {
+                    happyBirthdayElement.style.display = 'none';
+                    displayWishes();
+                }, 1000); // Wait for fade out effect
+            }, 5000); // Display Happy Birthday for 5 seconds
+        }
+
+        function displayWishes() {
+            wishesElement.style.display = 'block';
+            const message = "Wishing you long life and prosperity. May this special day bring you closer to your dreams and fill your heart with joy.";
+            let index = 0;
+            wishesElement.innerHTML = '';
+
+            function typeWriter() {
+                if (index < message.length) {
+                    wishesElement.innerHTML += message.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 50);
+                } else {
+                    setTimeout(() => {
+                        wishesElement.style.opacity = 0;
+                        setTimeout(() => {
+                            wishesElement.style.display = 'none';
+                            displayHappyBirthday(); // Re-display Happy Birthday message
+                        }, 1000); // Wait for fade out effect
+                    }, 6000); // Display wishes for 6 seconds
+                }
+            }
+
+            typeWriter();
         }
 
         function displayCake() {
@@ -224,14 +257,11 @@
             }
         }
 
-        function displayWishes() {
-            wishesElement.style.display = 'block';
-        }
-
         const countdownInterval = setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
+
 
 
 
