@@ -115,16 +115,24 @@
         }
         #wishes {
             display: none;
-            font-size: 24px;
-            font-style: italic;
+            font-size: 36px;
+            font-family: 'Brush Script MT', cursive;
             font-weight: bold;
             color: #FF1493;
             margin-top: 20px;
             white-space: pre-wrap; /* Preserve whitespace for animation */
         }
-        @keyframes appear {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes vanish {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        #final-message {
+            display: none;
+            font-size: 72px;
+            font-family: 'Brush Script MT', cursive;
+            color: #FF1493;
+            margin-top: 10%;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -136,6 +144,7 @@
     <div id="gift"></div>
     <div id="glitters"></div>
     <div id="wishes"></div>
+    <div id="final-message">Happy Birthday once more Lola!</div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
@@ -146,6 +155,7 @@
         const giftElement = document.getElementById('gift');
         const glittersCanvas = document.getElementById('glitters');
         const wishesElement = document.getElementById('wishes');
+        const finalMessageElement = document.getElementById('final-message');
 
         let secondsRemaining = 15;
 
@@ -207,11 +217,22 @@
                     setTimeout(typeWriter, 50);
                 } else {
                     setTimeout(() => {
-                        wishesElement.style.opacity = 0;
+                        wishesElement.style.animation = 'vanish 1s forwards';
                         setTimeout(() => {
                             wishesElement.style.display = 'none';
-                            displayHappyBirthday(); // Re-display Happy Birthday message
-                        }, 1000); // Wait for fade out effect
+                            setTimeout(() => {
+                                fireworksCanvas.style.display = 'block';
+                                createBalloons();
+                                finalMessageElement.style.display = 'block';
+                                setTimeout(() => {
+                                    finalMessageElement.style.opacity = 0;
+                                    setTimeout(() => {
+                                        finalMessageElement.style.display = 'none';
+                                        displayHappyBirthday(); // Re-display Happy Birthday message
+                                    }, 1000); // Wait for fade out effect
+                                }, 4000); // Display final message for 4 seconds
+                            }, 1000); // Wait for vanish effect
+                        }, 1000); // Wait for vanish effect
                     }, 6000); // Display wishes for 6 seconds
                 }
             }
@@ -257,10 +278,21 @@
             }
         }
 
+        function startAnimation() {
+            countdownElement.style.display = 'block';
+            createBalloons();
+            setTimeout(() => {
+                triggerFireworks();
+            }, 2000); // Wait 2 seconds before triggering fireworks
+        }
+
         const countdownInterval = setInterval(updateCountdown, 1000);
+        startAnimation();
     </script>
 </body>
 </html>
+
+
 
 
 
