@@ -34,28 +34,25 @@
             text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
             margin-top: 10%;
         }
-        .balloons {
+        .balloon {
             position: absolute;
-            bottom: -100px;
+            bottom: -150px;
             width: 100px;
             height: 150px;
             background: linear-gradient(to bottom, #FF1493, #FF69B4);
             border-radius: 50% 50% 0 0;
-            animation: float 4s ease-in-out infinite;
+            opacity: 1;
+            animation: float 10s ease-in-out forwards, fadeOut 10s ease-in-out forwards;
         }
-        .balloons:nth-child(2) {
+        .balloon:nth-child(1) {
             left: 20%;
-            animation-delay: 1s;
+            animation-delay: 0s;
         }
-        .balloons:nth-child(3) {
-            left: 40%;
+        .balloon:nth-child(2) {
+            left: 50%;
             animation-delay: 2s;
         }
-        .balloons:nth-child(4) {
-            left: 60%;
-            animation-delay: 3s;
-        }
-        .balloons:nth-child(5) {
+        .balloon:nth-child(3) {
             left: 80%;
             animation-delay: 4s;
         }
@@ -63,11 +60,16 @@
             0% {
                 transform: translateY(0);
             }
-            50% {
-                transform: translateY(-50px);
+            100% {
+                transform: translateY(-120vh);
+            }
+        }
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
             }
             100% {
-                transform: translateY(0);
+                opacity: 0;
             }
         }
         #cake {
@@ -187,9 +189,9 @@
         }
 
         function createBalloons() {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 1; i <= 3; i++) {
                 const balloon = document.createElement('div');
-                balloon.classList.add('balloons');
+                balloon.classList.add('balloon');
                 document.body.appendChild(balloon);
             }
         }
@@ -198,6 +200,7 @@
     </script>
 </body>
 </html>
+
 
 
 
