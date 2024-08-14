@@ -13,16 +13,20 @@
             background-color: #001f3f; /* Navy blue background */
             overflow: hidden;
         }
-        #time {
+        #date {
             font-family: 'Arial', sans-serif;
-            font-size: 48px;
+            font-size: 24px;
             color: #FFFFFF; /* White color */
-            margin-top: 5%;
+            margin-top: 10%;
+        }
+        #time {
+            font-size: 36px;
+            color: #FFFFFF;
         }
         #countdown {
             font-size: 56px;
-            margin-top: 2%;
-            color: #FFFFFF;
+            margin-top: 20px;
+            color: #FFD700; /* Gold color */
         }
         #happy-birthday {
             display: none;
@@ -143,6 +147,7 @@
     <div id="cake"></div>
     <div id="gift"></div>
     <div id="glitters"></div>
+    <div id="date">Wednesday, August 15</div>
     <div id="time">11:59</div>
     <div id="countdown">59</div>
     <div id="happy-birthday">HAPPY BIRTHDAY LOLA</div>
@@ -152,6 +157,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const countdownElement = document.getElementById('countdown');
+        const dateElement = document.getElementById('date');
         const timeElement = document.getElementById('time');
         const happyBirthdayElement = document.getElementById('happy-birthday');
         const fireworksCanvas = document.getElementById('fireworks');
@@ -171,6 +177,7 @@
             } else {
                 clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
+                dateElement.textContent = 'Thursday, August 16';
                 timeElement.textContent = '12:00';
                 happyBirthdayElement.style.display = 'block';
                 triggerFireworks();
@@ -246,63 +253,43 @@
                 word.split('').forEach((char, charIndex) => {
                     const span = document.createElement('span');
                     span.classList.add('letter');
-                    span.classList.add('letter');
-                    span.style.setProperty('--i', wordIndex * 10 + charIndex); // Set delay based on word and character index
+                    span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
                     span.textContent = char;
+                    span.style.setProperty('--i', wordIndex * message.length + charIndex);
                     finalMessageElement.appendChild(span);
                 });
-
-                // Add space between words
-                const spaceSpan = document.createElement('span');
-                spaceSpan.textContent = ' ';
-                finalMessageElement.appendChild(spaceSpan);
+                finalMessageElement.appendChild(document.createTextNode(' ')); // Add space between words
             });
 
-            triggerFinalFireworks();
-        }
-
-        function triggerFinalFireworks() {
-            const duration = 6 * 1000; // 6 seconds
-            const end = Date.now() + duration;
-
-            const interval = setInterval(() => {
-                if (Date.now() > end) {
-                    clearInterval(interval);
-                    return;
-                }
-
-                confetti({
-                    particleCount: 200,
-                    startVelocity: 50,
-                    spread: 360,
-                    colors: ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'],
-                    origin: { y: Math.random() * 0.6 }
-                });
-            }, 500);
+            setTimeout(() => {
+                finalMessageElement.style.opacity = 0;
+                setTimeout(() => {
+                    finalMessageElement.style.display = 'block';
+                    fireworksCanvas.style.display = 'block';
+                    glittersCanvas.style.display = 'block';
+                }, 1000); // Wait for fade out effect
+            }, 3000); // Display for 3 seconds
         }
 
         function createBalloons() {
-            const numOfBalloons = 3;
-            for (let i = 0; i < numOfBalloons; i++) {
+            for (let i = 0; i < 3; i++) {
                 const balloon = document.createElement('div');
-                balloon.className = 'balloon';
+                balloon.classList.add('balloon');
                 document.body.appendChild(balloon);
-
-                balloon.addEventListener('animationend', () => {
-                    balloon.remove();
-                });
             }
         }
 
         function hideBalloons() {
-            const balloons = document.querySelectorAll('.balloon');
-            balloons.forEach(balloon => {
-                balloon.style.display = 'none';
+            document.querySelectorAll('.balloon').forEach(balloon => {
+                balloon.style.opacity = 0;
+                setTimeout(() => balloon.remove(), 1000); // Remove after fade out
             });
         }
     </script>
 </body>
 </html>
+
+
 
 
 
