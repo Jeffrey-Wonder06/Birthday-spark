@@ -19,19 +19,19 @@
         }
         .buzzer {
             display: none;
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 75px;
             background-color: gold;
             border: 5px solid #000;
-            border-radius: 50%;
-            margin: 20px auto;
+            border-radius: 50% 50% 0 0;
+            margin: 20px auto 0 auto;
             position: relative;
         }
         #hand {
             display: none;
-            width: 100px;
+            width: 150px;
             position: absolute;
-            top: -100px;
+            top: -150px;
             left: 50%;
             transform: translateX(-50%);
             animation: press 1s ease-in-out forwards;
@@ -47,8 +47,8 @@
         }
 
         @keyframes press {
-            0% { top: -100px; }
-            50% { top: -50px; }
+            0% { top: -150px; }
+            50% { top: -75px; }
             100% { top: 0; }
         }
     </style>
@@ -56,7 +56,7 @@
 <body>
     <div id="countdown">15</div>
     <div class="buzzer" id="buzzer"></div>
-    <img id="hand" src="hand.png" alt="Hand Pressing Buzzer">
+    <img id="hand" src="hand.png" alt="">
     <canvas id="fireworks"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
@@ -83,14 +83,26 @@
 
         function triggerFireworks() {
             fireworksCanvas.style.display = 'block';
-            confetti({
-                particleCount: 200,
-                spread: 360,
-                origin: { y: 0.6 }
-            });
+            const duration = 5 * 1000; // 5 seconds
+            const end = Date.now() + duration;
+
+            const interval = setInterval(() => {
+                if (Date.now() > end) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                confetti({
+                    particleCount: 100,
+                    startVelocity: 30,
+                    spread: 360,
+                    origin: { y: Math.random() * 0.6 }
+                });
+            }, 250);
         }
 
         const countdownInterval = setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
+
