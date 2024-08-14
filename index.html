@@ -31,7 +31,7 @@
             margin-bottom: 10px;
         }
         #countdown {
-            font-size: 64px;
+            font-size: 56px;
             color: #FFD700; /* Gold color */
         }
         #happy-birthday {
@@ -148,7 +148,7 @@
         }
         @media (max-width: 600px) {
             #countdown {
-                font-size: 64px;
+                font-size: 40px;
             }
             #happy-birthday {
                 font-size: 60px;
@@ -244,7 +244,7 @@
         function displayWishes() {
             wishesElement.style.display = 'block';
             const message = "Wishing you long life and prosperity.\nMay this special day bring you
-let index = 0;
+            let index = 0;
             wishesElement.innerHTML = '';
 
             function typeWriter() {
@@ -259,7 +259,7 @@ let index = 0;
                             wishesElement.style.display = 'none';
                             triggerFinalMessage();
                         }, 1000); // Wait for vanish effect
-                    }, 3000); // Display wishes for 3 seconds
+                    }, 2000); // Display wishes for 2 seconds
                 }
             }
 
