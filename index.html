@@ -10,8 +10,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background: url('background.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #f0f0f0; /* Plain background */
             overflow: hidden;
         }
         #countdown {
@@ -37,6 +36,7 @@
             text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
             margin-top: 10%;
             animation: colorChange 3s infinite;
+            position: relative;
         }
         @keyframes colorChange {
             0% { color: #FF1493; }
@@ -59,12 +59,11 @@
             position: absolute;
             width: 2px;
             height: 80px;
-            background: #000;
+            background: linear-gradient(to bottom, #000, #555); /* Spaghetti-like appearance */
             bottom: -80px;
             left: 50%;
-            transform: translateX(-50%) rotate(-15deg); /* Added rotation for a curve effect */
+            transform: translateX(-50%) rotate(-15deg);
             border-radius: 10px;
-            background: linear-gradient(to bottom, #000, #555); /* Spaghetti-like appearance */
         }
         .balloon:nth-child(1) {
             left: 20%;
@@ -126,6 +125,7 @@
             margin-top: 20px;
             white-space: pre-wrap; /* Preserve whitespace for animation */
             transform: rotate(-2deg);
+            font-style: italic; /* Slanted font */
         }
         @keyframes vanish {
             0% { opacity: 1; }
@@ -138,18 +138,28 @@
             color: #FF1493;
             margin-top: 10%;
             text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+            position: relative;
+            white-space: nowrap;
+        }
+        @keyframes drop {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .letter {
+            display: inline-block;
+            animation: drop 0.5s ease forwards;
         }
     </style>
 </head>
 <body>
     <div id="countdown">15</div>
     <canvas id="fireworks"></canvas>
-    <div id="happy-birthday">Happy Birthday Lola!</div>
+    <div id="happy-birthday"></div>
     <div id="cake"></div>
     <div id="gift"></div>
     <div id="glitters"></div>
     <div id="wishes"></div>
-    <div id="final-message">Happy Birthday once more Lola!</div>
+    <div id="final-message"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
@@ -200,13 +210,31 @@
 
         function displayHappyBirthday() {
             happyBirthdayElement.style.display = 'block';
-            setTimeout(() => {
-                happyBirthdayElement.style.opacity = 0;
-                setTimeout(() => {
-                    happyBirthdayElement.style.display = 'none';
-                    displayWishes();
-                }, 1000); // Wait for fade out effect
-            }, 5000); // Display Happy Birthday for 5 seconds
+            const message = "Happy Birthday once more Lola!";
+            happyBirthdayElement.innerHTML = '';
+
+            let index = 0;
+            function typeWriter() {
+                if (index < message.length) {
+                    const letter = document.createElement('span');
+                    letter.classList.add('letter');
+                    letter.style.animationDelay = `${index * 0.1}s`;
+                    letter.textContent = message.charAt(index);
+                    happyBirthdayElement.appendChild(letter);
+                    index++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    setTimeout(() => {
+                        happyBirthdayElement.style.opacity = 0;
+                        setTimeout(() => {
+                            happyBirthdayElement.style.display = 'none';
+                            displayWishes();
+                        }, 1000); // Wait for fade out effect
+                    }, 2000); // Display Happy Birthday for 2 seconds
+                }
+            }
+
+            typeWriter();
         }
 
         function displayWishes() {
@@ -225,21 +253,32 @@
                         wishesElement.style.animation = 'vanish 1s forwards';
                         setTimeout(() => {
                             wishesElement.style.display = 'none';
-                            setTimeout(() => {
-                                fireworksCanvas.style.display = 'block';
-                                createBalloons();
-                                setTimeout(() => {
-                                    finalMessageElement.style.display = 'block';
-                                    setTimeout(() => {
-                                        finalMessageElement.style.opacity = 0;
-                                        setTimeout(() => {
-                                            finalMessageElement.style.display = 'none';
-                                        }, 1000); // Wait for fade out effect
-                                    }, 1000); // Display final message for 1 second
-                                }, 2000); // Wait 2 seconds before showing final message
-                            }, 1000); // Wait 1 second before reappearing fireworks and balloons
+                            triggerFinalMessage();
                         }, 1000); // Wait for vanish effect
-                    }, 6000); // Display wishes for 6 seconds
+                    }, 2000); // Display wishes for 2 seconds
+                }
+            }
+
+            typeWriter();
+        }
+
+        function triggerFinalMessage() {
+            fireworksCanvas.style.display = 'block';
+            createBalloons();
+            finalMessageElement.style.display = 'block';
+            const message = "Happy Birthday once more Lola!";
+            finalMessageElement.innerHTML = '';
+
+            let index = 0;
+            function typeWriter() {
+                if (index < message.length) {
+                    const letter = document.createElement('span');
+                    letter.classList.add('letter');
+                    letter.style.animationDelay = `${index * 0.1}s`;
+                    letter.textContent = message.charAt(index);
+                    finalMessageElement.appendChild(letter);
+                    index++;
+                    setTimeout(typeWriter, 100);
                 }
             }
 
@@ -247,7 +286,7 @@
         }
 
         function createBalloons() {
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 0; i < 3; i++) {
                 const balloon = document.createElement('div');
                 balloon.classList.add('balloon');
                 document.body.appendChild(balloon);
@@ -258,6 +297,7 @@
     </script>
 </body>
 </html>
+
 
 
 
