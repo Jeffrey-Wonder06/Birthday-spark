@@ -10,12 +10,14 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
             overflow: hidden;
         }
         #countdown {
             font-size: 48px;
             margin-top: 20%;
+            color: #FFFFFF;
         }
         #fireworks {
             display: none;
@@ -61,6 +63,8 @@
             bottom: -80px;
             left: 50%;
             transform: translateX(-50%) rotate(-15deg); /* Added rotation for a curve effect */
+            border-radius: 10px;
+            background: linear-gradient(to bottom, #000, #555); /* Spaghetti-like appearance */
         }
         .balloon:nth-child(1) {
             left: 20%;
@@ -121,6 +125,7 @@
             color: #FF1493;
             margin-top: 20px;
             white-space: pre-wrap; /* Preserve whitespace for animation */
+            transform: rotate(-2deg);
         }
         @keyframes vanish {
             0% { opacity: 1; }
@@ -206,7 +211,7 @@
 
         function displayWishes() {
             wishesElement.style.display = 'block';
-            const message = "Wishing you long life and prosperity. May this special day bring you closer to your dreams and fill your heart with joy.";
+            const message = "Wishing you long life and prosperity.\nMay this special day bring you closer to your dreams and fill your heart with joy.";
             let index = 0;
             wishesElement.innerHTML = '';
 
@@ -231,7 +236,7 @@
                                             finalMessageElement.style.display = 'none';
                                         }, 1000); // Wait for fade out effect
                                     }, 1000); // Display final message for 1 second
-                                }, 1000); // Wait 1 second before showing final message
+                                }, 2000); // Wait 2 seconds before showing final message
                             }, 1000); // Wait 1 second before reappearing fireworks and balloons
                         }, 1000); // Wait for vanish effect
                     }, 6000); // Display wishes for 6 seconds
@@ -253,6 +258,7 @@
     </script>
 </body>
 </html>
+
 
 
 
