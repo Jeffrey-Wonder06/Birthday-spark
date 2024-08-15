@@ -14,7 +14,7 @@
             overflow: hidden;
         }
         #countdown {
-            font-size: 72px;
+            font-size: 56px;
             margin-top: 20%;
             color: #FFD700; /* Gold color */
         }
@@ -119,6 +119,9 @@
             position: relative;
             white-space: nowrap;
             text-align: center;
+            overflow: hidden;
+            height: 100vh; /* Full viewport height */
+            transition: transform 2s ease-in-out; /* Smooth sliding transition */
         }
         .word {
             display: inline-block;
@@ -237,21 +240,21 @@
             glittersCanvas.style.display = 'block';
             createBalloons(); // Recreate balloons
             finalMessageElement.style.display = 'block';
+            finalMessageElement.style.transform = 'translateY(0)'; // Slide into view
+
             finalMessageElement.innerHTML = '';
             const message = "Happy Birthday once more Lola!";
-            const colors = ['#FF69B4', '#FF1493', '#00BFFF', '#32CD32', '#FFD700']; // Different colors
-            const words = message.split(' ');
+            const colors = ['#FF69B4', '#FF1493', '#00BFFF', '#32CD32'];
 
-            words.forEach((word, wordIndex) => {
+            message.split(' ').forEach(word => {
                 const wordSpan = document.createElement('span');
                 wordSpan.classList.add('word');
-                wordSpan.style.animationDelay = `${wordIndex * 0.5}s`; // Delay between words
                 word.split('').forEach((char, charIndex) => {
                     const span = document.createElement('span');
                     span.classList.add('letter');
-                    span.style.setProperty('--i', charIndex); // Set custom property for animation delay
+                    span.style.setProperty('--i', charIndex);
                     span.textContent = char;
-                    span.style.color = colors[charIndex % colors.length]; // Different color for each letter
+                    span.style.color = colors[charIndex % colors.length];
                     wordSpan.appendChild(span);
                 });
                 finalMessageElement.appendChild(wordSpan);
@@ -291,6 +294,7 @@
     </script>
 </body>
 </html>
+
 
 
 
