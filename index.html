@@ -14,7 +14,7 @@
             overflow: hidden;
         }
         #countdown {
-            font-size: 72px;
+            font-size: 84px;
             margin-top: 20%;
             color: #FFD700; /* Gold color */
         }
@@ -23,9 +23,10 @@
             font-family: 'Comic Sans MS', cursive, sans-serif;
             font-size: 84px;
             font-weight: bold;
-            color: #FFD700; /* Gold color */
-            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Shadow effect */
-            animation: colorChange 2s infinite; /* Color change animation */
+            margin-top: 10%;
+            color: #FFD700;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+            animation: colorChange 2s infinite;
         }
         @keyframes colorChange {
             0% { color: #FFD700; } /* Gold */
@@ -33,15 +34,6 @@
             50% { color: #00BFFF; } /* Deep Sky Blue */
             75% { color: #32CD32; } /* Lime Green */
             100% { color: #FFD700; } /* Gold */
-        }
-        #fireworks, #glitters {
-            display: none;
-            width: 100%;
-            height: 100vh;
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
         }
         #wishes {
             display: none;
@@ -55,14 +47,11 @@
             line-height: 1.5;
             text-align: center;
         }
-        @keyframes vanish {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
         #final-message {
             display: none;
             font-size: 72px;
             font-family: 'Brush Script MT', cursive;
+            margin-top: 10%;
             text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
             position: relative;
             white-space: nowrap;
@@ -76,88 +65,97 @@
             display: inline-block;
             animation: drop 0.5s ease forwards;
             animation-delay: calc(var(--i) * 0.1s);
-            color: var(--color);
+            color: #FFD700; /* Default Gold color */
         }
     </style>
 </head>
 <body>
-    <canvas id="fireworks"></canvas>
     <div id="countdown">3</div>
     <div id="happy-birthday">HAPPY BIRTHDAY LOLA</div>
     <div id="wishes"></div>
     <div id="final-message"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const countdownElement = document.getElementById('countdown');
         const happyBirthdayElement = document.getElementById('happy-birthday');
+        const wishesElement = document.getElementById('wishes');
         const finalMessageElement = document.getElementById('final-message');
-        const fireworksCanvas = document.getElementById('fireworks');
 
-        let countdownNumber = 3;
+        let countdown = 3;
 
         function updateCountdown() {
-            countdownElement.textContent = countdownNumber;
+            countdownElement.textContent = countdown;
 
-            if (countdownNumber > 0) {
-                countdownNumber--;
+            if (countdown > 0) {
+                playTickSound();
+                countdown--;
             } else {
                 clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
                 happyBirthdayElement.style.display = 'block';
-                triggerFireworks();
-                setTimeout(() => {
-                    happyBirthdayElement.style.display = 'none';
-                    displayFinalMessage();
-                }, 3000); // Display for 3 seconds
+                setTimeout(displayWishes, 3000);
             }
+        }
+
+        function playTickSound() {
+            const tickSound = new Audio('tick.mp3');
+            tickSound.play();
+        }
+
+        function playBoomSound() {
+            const boomSound = new Audio('boom.mp3');
+            boomSound.play();
         }
 
         const countdownInterval = setInterval(updateCountdown, 1000);
 
-        function triggerFireworks() {
-            fireworksCanvas.style.display = 'block';
-            const duration = 5 * 1000;
-            const end = Date.now() + duration;
+        function displayWishes() {
+            happyBirthdayElement.style.opacity = 0;
+            setTimeout(() => {
+                happyBirthdayElement.style.display = 'none';
+                wishesElement.style.display = 'block';
+                const message = "Wishing you long life and prosperity.\nMay this special day bring you closer to your dreams and fill your heart with joy.";
+                let index = 0;
+                wishesElement.innerHTML = '';
 
-            const interval = setInterval(() => {
-                if (Date.now() > end) {
-                    clearInterval(interval);
-                    return;
+                function typeWriter() {
+                    if (index < message.length) {
+                        wishesElement.innerHTML += message.charAt(index);
+                        index++;
+                        setTimeout(typeWriter, 50);
+                    } else {
+                        setTimeout(() => {
+                            wishesElement.style.display = 'none';
+                            triggerFinalMessage();
+                        }, 3000);
+                    }
                 }
 
-                confetti({
-                    particleCount: 100,
-                    startVelocity: 30,
-                    spread: 360,
-                    colors: ['#FFD700', '#FFEC8B', '#FFFFFF', '#FF69B4'],
-                    origin: { y: Math.random() * 0.6 }
-                });
-            }, 250);
+                typeWriter();
+            }, 1000); 
         }
 
-        function displayFinalMessage() {
-            fireworksCanvas.style.display = 'block';
+        function triggerFinalMessage() {
+            playBoomSound();
             finalMessageElement.style.display = 'block';
             const message = "Happy Birthday once more Lola!";
             finalMessageElement.innerHTML = '';
-            const colors = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'];
-
             message.split(' ').forEach((word, wordIndex) => {
                 word.split('').forEach((char, charIndex) => {
                     const span = document.createElement('span');
                     span.classList.add('letter');
-                    span.style.setProperty('--i', wordIndex * message.length + charIndex);
-                    span.style.setProperty('--color', colors[charIndex % colors.length]);
+                    span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
                     span.textContent = char;
+                    span.style.setProperty('--i', wordIndex * message.length + charIndex);
                     finalMessageElement.appendChild(span);
                 });
-                finalMessageElement.appendChild(document.createTextNode(' '));
+                finalMessageElement.appendChild(document.createTextNode(' ')); 
             });
         }
     </script>
 </body>
 </html>
+
 
 
 
