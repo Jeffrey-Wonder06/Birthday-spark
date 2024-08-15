@@ -14,7 +14,7 @@
             overflow: hidden;
         }
         #countdown {
-            font-size: 64px;
+            font-size: 56px;
             margin-top: 20%;
             color: #FFD700; /* Gold color */
         }
@@ -121,14 +121,20 @@
             white-space: nowrap;
             text-align: center;
         }
+        .word {
+            display: inline-block;
+            position: relative;
+            animation: drop 1s ease forwards;
+        }
         @keyframes drop {
-            from { transform: translateY(-100px); opacity: 0; }
+            from { transform: translateY(-200px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         .letter {
             display: inline-block;
             animation: drop 0.5s ease forwards;
             animation-delay: calc(var(--i) * 0.1s); /* Delay based on letter index */
+            color: #FFD700; /* Default color */
         }
     </style>
 </head>
@@ -233,16 +239,22 @@
             glittersCanvas.style.display = 'block';
             createBalloons(); // Recreate balloons
             finalMessageElement.style.display = 'block';
-            const message = "Happy Birthday once more Lola!";
             finalMessageElement.innerHTML = '';
-            message.split(' ').forEach((word, wordIndex) => {
+            const message = "Happy Birthday once more Lola!";
+            const words = message.split(' ');
+
+            words.forEach((word, wordIndex) => {
+                const wordSpan = document.createElement('span');
+                wordSpan.classList.add('word');
+                wordSpan.style.animationDelay = `${wordIndex * 0.5}s`; // Delay between words
                 word.split('').forEach((char, charIndex) => {
                     const span = document.createElement('span');
                     span.classList.add('letter');
-                    span.style.color = ['#FFD700', '#FF69B4', '#00BFFF', '#32CD32'][charIndex % 4];
+                    span.style.setProperty('--i', charIndex); // Set custom property for animation delay
                     span.textContent = char;
-                    finalMessageElement.appendChild(span);
+                    wordSpan.appendChild(span);
                 });
+                finalMessageElement.appendChild(wordSpan);
                 finalMessageElement.appendChild(document.createElement('span')).textContent = ' '; // Space between words
             });
 
@@ -253,7 +265,7 @@
                     setTimeout(() => {
                         finalMessageElement.style.display = 'none';
                     }, 2000); // Wait for vanish effect
-                }, 4000); // Display final message for 4 seconds
+                }, 5000); // Display final message for 5 seconds
             }, 1000); // Initial delay
         }
 
@@ -279,6 +291,7 @@
     </script>
 </body>
 </html>
+
 
 
 
