@@ -14,7 +14,7 @@
             overflow: hidden;
         }
         #countdown {
-            font-size: 56px;
+            font-size: 72px;
             margin-top: 20%;
             color: #FFD700; /* Gold color */
         }
@@ -116,7 +116,6 @@
             font-size: 72px;
             font-family: 'Brush Script MT', cursive;
             margin-top: 10%;
-            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
             position: relative;
             white-space: nowrap;
             text-align: center;
@@ -134,7 +133,6 @@
             display: inline-block;
             animation: drop 0.5s ease forwards;
             animation-delay: calc(var(--i) * 0.1s); /* Delay based on letter index */
-            color: #FFD700; /* Default color */
         }
     </style>
 </head>
@@ -241,6 +239,7 @@
             finalMessageElement.style.display = 'block';
             finalMessageElement.innerHTML = '';
             const message = "Happy Birthday once more Lola!";
+            const colors = ['#FF69B4', '#FF1493', '#00BFFF', '#32CD32', '#FFD700']; // Different colors
             const words = message.split(' ');
 
             words.forEach((word, wordIndex) => {
@@ -252,6 +251,7 @@
                     span.classList.add('letter');
                     span.style.setProperty('--i', charIndex); // Set custom property for animation delay
                     span.textContent = char;
+                    span.style.color = colors[charIndex % colors.length]; // Different color for each letter
                     wordSpan.appendChild(span);
                 });
                 finalMessageElement.appendChild(wordSpan);
@@ -291,6 +291,7 @@
     </script>
 </body>
 </html>
+
 
 
 
