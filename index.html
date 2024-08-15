@@ -132,19 +132,15 @@
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #FFD700; /* Gold color */
             text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Shadow effect */
-            animation: drop 3s ease-in-out forwards; /* Drop effect */
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            animation: slideIn 2s ease-in-out forwards; /* Slide-in effect */
         }
-        #final-message .word:nth-child(1) { color: #FF69B4; top: 10%; } /* Hot Pink */
-        #final-message .word:nth-child(2) { color: #00BFFF; top: 25%; } /* Deep Sky Blue */
-        #final-message .word:nth-child(3) { color: #32CD32; top: 40%; } /* Lime Green */
-        #final-message .word:nth-child(4) { color: #FFD700; top: 55%; } /* Gold */
-        #final-message .word:nth-child(5) { color: #FF4500; top: 70%; } /* OrangeRed */
-        @keyframes drop {
-            0% { transform: translateY(-100vh); }
-            100% { transform: translateY(0); }
+        #final-message .word:nth-child(1) { color: #FF69B4; } /* Hot Pink */
+        #final-message .word:nth-child(2) { color: #00BFFF; } /* Deep Sky Blue */
+        #final-message .word:nth-child(3) { color: #32CD32; } /* Lime Green */
+        #final-message .word:nth-child(4) { color: #FFD700; } /* Gold */
+        @keyframes slideIn {
+            from { transform: translateY(100vh); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
@@ -221,44 +217,46 @@
                     colors: ['#FFD700', '#FFEC8B', '#FFFFFF', '#FF69B4'],
                     origin: { y: Math.random() * 0.6 }
                 });
+                playSound('boom.mp3'); // Play boom sound
             }, 250);
         }
 
         function displayWishes() {
             wishesElement.style.display = 'block';
             const message = "Wishing you long life and prosperity.\nMay this special day bring you closer to your dreams and fill your heart with joy.";
-            wishesElement.textContent = message;
+            let index = 0;
+            wishesElement.innerHTML = '';
 
-            setTimeout(() => {
-                wishesElement.style.animation = 'vanish 6s forwards';
-                setTimeout(() => {
-                    displayFinalMessage();
-                }, 6000); // Wait for vanish effect
-            }, 3000); // Display for 3 seconds
+            function typeWriter() {
+                if (index < message.length) {
+                    wishesElement.innerHTML += message.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 50);
+                } else {
+                    setTimeout(() => {
+                        wishesElement.style.opacity = 0;
+                        setTimeout(() => {
+                            wishesElement.style.display = 'none';
+                            displayFinalMessage();
+                        }, 2000);
+                    }, 5000);
+                }
+            }
+            typeWriter();
         }
 
         function displayFinalMessage() {
             finalMessageElement.style.display = 'block';
-            const words = finalMessageElement.querySelectorAll('.word');
-            words.forEach((word, index) => {
-                word.style.animationDelay = `${index * 0.5}s`;
-            });
 
             setTimeout(() => {
-                triggerFinalFireworks();
+                finalMessageElement.style.opacity = 1;
                 setTimeout(() => {
-                    window.close(); // Close the window
-                }, 5000); // Wait for fireworks to finish
-            }, 4000); // Display for 4 seconds
-        }
-
-        function triggerFinalFireworks() {
-            confetti({
-                particleCount: 200,
-                spread: 360,
-                colors: ['#FFD700', '#FFEC8B', '#FF69B4', '#00BFFF'],
-                origin: { y: Math.random() * 0.6 }
-            });
+                    finalMessageElement.style.animation = 'vanish 2s forwards';
+                    setTimeout(() => {
+                        finalMessageElement.style.display = 'none';
+                    }, 2000); // Wait for vanish effect
+                }, 5000); // Display final message for 5 seconds
+            }, 1000); // Initial delay
         }
 
         function playSound(src) {
@@ -267,30 +265,23 @@
         }
 
         function createBalloons() {
-            const balloonContainer = document.createElement('div');
-            balloonContainer.style.position = 'absolute';
-            balloonContainer.style.bottom = '0';
-            balloonContainer.style.left = '0';
-            balloonContainer.style.width = '100%';
-            balloonContainer.style.height = '100vh';
-            document.body.appendChild(balloonContainer);
-
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 5; i++) {
                 const balloon = document.createElement('div');
                 balloon.classList.add('balloon');
-                balloonContainer.appendChild(balloon);
+                document.body.appendChild(balloon);
             }
         }
 
         function hideBalloons() {
-            const balloonContainer = document.querySelector('div[style*="position: absolute"]');
-            if (balloonContainer) {
-                balloonContainer.style.display = 'none';
-            }
+            document.querySelectorAll('.balloon').forEach(balloon => {
+                balloon.style.opacity = 0;
+                setTimeout(() => balloon.remove(), 1000); // Remove after fade out
+            });
         }
     </script>
 </body>
 </html>
+
 
 
 
